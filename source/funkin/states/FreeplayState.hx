@@ -64,15 +64,11 @@ class FreeplayState extends MusicBeatState
 		var initSonglist = Utils.coolTextFile(Paths.txt('freeplaySonglist'));
 
 		for (i in 0...initSonglist.length)
-		{
 			songs.push(new SongMetadata(initSonglist[i], 1, 'gf'));
-		}
 
 		if (FlxG.sound.music != null)
-		{
 			if (!FlxG.sound.music.playing)
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-		}
 
 		if (StoryMenuState.weekUnlocked[2] || isDebug)
 			addWeek(['Bopeebo', 'Fresh', 'Dadbattle'], 1, ['dad']);
@@ -95,10 +91,6 @@ class FreeplayState extends MusicBeatState
 		if (StoryMenuState.weekUnlocked[7] || isDebug)
 			addWeek(['Ugh', 'Guns', 'Stress'], 7, ['tankman']);
 
-		// LOAD MUSIC
-
-		// LOAD CHARACTERS
-
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		add(bg);
 
@@ -118,56 +110,23 @@ class FreeplayState extends MusicBeatState
 			// using a FlxGroup is too much fuss!
 			iconArray.push(icon);
 			add(icon);
-
-			// songText.x += 40;
-			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-			// songText.screenCenter(X);
 		}
 
-		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
-		// scoreText.autoSize = false;
-		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
-		// scoreText.alignment = RIGHT;
+		scoreText = new FlxText(0, 8, 0, "", 32);
+		scoreText.setFormat(Paths.font("vcr.ttf"), 28, FlxColor.WHITE, RIGHT);
 
-		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 66, 0x99000000);
+		scoreBG = new FlxSprite(0, 4).makeGraphic(1, 1, 0xBF000000);
 		scoreBG.antialiasing = false;
-		add(scoreBG);
-
-		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
+		
+		diffText = new FlxText(0, scoreText.y + scoreText.height, 0, "", 20);
 		diffText.font = scoreText.font;
+		
+		add(scoreBG);
 		add(diffText);
-
 		add(scoreText);
 
 		changeSelection();
 		changeDiff();
-
-		// FlxG.sound.playMusic(Paths.music('title'), 0);
-		// FlxG.sound.music.fadeIn(2, 0, 0.8);
-		// selector = new FlxText();
-
-		// selector.size = 40;
-		// selector.text = ">";
-		// add(selector);
-
-		var swag:Alphabet = new Alphabet(1, 0, "swag");
-
-		// JUST DOIN THIS SHIT FOR TESTING!!!
-		/* 
-			var md:String = Markdown.markdownToHtml(Assets.getText('CHANGELOG.md'));
-
-			var texFel:TextField = new TextField();
-			texFel.width = FlxG.width;
-			texFel.height = FlxG.height;
-			// texFel.
-			texFel.htmlText = md;
-
-			FlxG.stage.addChild(texFel);
-
-			// scoreText.textField.htmlText = md;
-
-			trace(md);
-		 */
 
 		super.create();
 	}
@@ -267,7 +226,6 @@ class FreeplayState extends MusicBeatState
 	function changeSelection(change:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
 		curSelected += change;
 
 		if (curSelected < 0)
@@ -275,21 +233,11 @@ class FreeplayState extends MusicBeatState
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
-		// selector.y = (70 * curSelected) + 30;
-
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		// lerpScore = 0;
-
-		#if PRELOAD_ALL
-		FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
-		#end
-
 		var bullShit:Int = 0;
 
 		for (i in 0...iconArray.length)
-		{
 			iconArray[i].alpha = 0.6;
-		}
 
 		iconArray[curSelected].alpha = 1;
 
@@ -299,24 +247,23 @@ class FreeplayState extends MusicBeatState
 			bullShit++;
 
 			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
-
 			if (item.targetY == 0)
-			{
 				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
-			}
 		}
 	}
 
 	function positionHighscore()
 	{
-		scoreText.x = FlxG.width - scoreText.width - 6;
-		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
-		scoreBG.x = FlxG.width - scoreBG.scale.x / 2;
-
-		diffText.x = Std.int(scoreBG.x + scoreBG.width / 2);
+		scoreText.x = FlxG.width - scoreText.width - 4;
+	
+		diffText.x = Std.int(scoreText.x + scoreText.width / 2);
 		diffText.x -= (diffText.width / 2);
+
+		scoreBG.scale.x = scoreText.width + 8;
+		scoreBG.scale.y = diffText.y + diffText.height + scoreText.height;
+
+		scoreBG.x = FlxG.width - (scoreText.width / 2) - 4;
+		scoreBG.y = 24;
 	}
 }
 

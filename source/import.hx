@@ -1,5 +1,6 @@
 import Paths;
 
+import lib.*;
 import misc.*;
 import inputs.*;
 
@@ -19,6 +20,7 @@ import funkin.utils.native.Mac;
 import funkin.utils.native.Linux;
 #end
 
+import funkin.hud.*;
 import funkin.utils.*;
 import funkin.objects.*;
 import funkin.framerate.*;

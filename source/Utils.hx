@@ -42,6 +42,7 @@ class Utils
 
 		return dumbArray;
 	}
+
 	public static function camLerpShit(lerp:Float):Float
 	{
 		return lerp * (FlxG.elapsed / (1 / 60));

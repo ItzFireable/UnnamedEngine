@@ -1,4 +1,4 @@
-package;
+package lib;
 
 import Sys.sleep;
 
