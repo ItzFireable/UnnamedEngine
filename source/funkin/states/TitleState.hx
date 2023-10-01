@@ -31,7 +31,6 @@ import openfl.net.NetConnection;
 import openfl.net.NetStream;
 import shaders.BuildingShaders.BuildingShader;
 import shaders.BuildingShaders;
-import shaders.ColorSwap;
 
 using StringTools;
 
@@ -59,7 +58,6 @@ class TitleState extends MusicBeatState
 	var curWacky:Array<String> = [];
 	var wackyImage:FlxSprite;
 	var lastBeat:Int = 0;
-	var swagShader:ColorSwap;
 	var alphaShader:BuildingShaders;
 	var thingie:FlxSprite;
 
@@ -77,8 +75,6 @@ class TitleState extends MusicBeatState
 		startedIntro = false;
 
 		FlxG.game.focusLostFramerate = 60;
-
-		swagShader = new ColorSwap();
 		alphaShader = new BuildingShaders();
 
 		FlxG.sound.muteKeys = [ZERO];
@@ -247,9 +243,6 @@ class TitleState extends MusicBeatState
 
 		logoBl.updateHitbox();
 
-		logoBl.shader = swagShader.shader;
-		// logoBl.shader = alphaShader.shader;
-
 		// trace();
 		// logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
@@ -260,8 +253,6 @@ class TitleState extends MusicBeatState
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		gfDance.antialiasing = true;
 		add(gfDance);
-
-		gfDance.shader = swagShader.shader;
 
 		add(logoBl);
 
@@ -417,13 +408,6 @@ class TitleState extends MusicBeatState
 		 */
 
 		// if (FlxG.keys.justPressed.SPACE)
-		// swagShader.hasOutline = !swagShader.hasOutline;
-
-		if (controls.UI_LEFT)
-			swagShader.update(-elapsed * 0.1);
-
-		if (controls.UI_RIGHT)
-			swagShader.update(elapsed * 0.1);
 
 		super.update(elapsed);
 	}

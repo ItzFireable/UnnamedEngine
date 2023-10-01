@@ -1,5 +1,6 @@
 package funkin.gameplay;
 
+import flixel.util.FlxSort;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.FlxG;
@@ -17,18 +18,19 @@ import flixel.group.FlxSpriteGroup;
 
 class Strumline extends FlxSpriteGroup {
     private var targetCamera:FlxCamera;
+    public var notes:FlxTypedGroup<Note>;
 
     public function new(y:Float, camera:FlxCamera) {
         super();
+
         targetCamera = camera;
+
+        notes = new FlxTypedGroup<Note>();
+        notes.cameras = [targetCamera];
 
         for (i in 0...4)
         {
             var babyArrow:FlxSprite = new FlxSprite(0, y);
-            var colorswap:ColorSwap = new ColorSwap();
-
-            babyArrow.shader = colorswap.shader;
-            colorswap.update(Note.arrowColors[i]);
 
             babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
             babyArrow.animation.addByPrefix('green', 'arrowUP');
@@ -78,5 +80,18 @@ class Strumline extends FlxSpriteGroup {
         
         for (object in this)
             object.cameras = [targetCamera];
+    }
+
+    public function addNote(newNote:Note)
+    {
+        notes.add(newNote);
+        notes.sort(Utils.sortNotes, FlxSort.DESCENDING);
+    }
+
+    public override function update(elapsed:Float)
+    {
+        notes.forEach(function(note:Note) {
+            note.x = this.x + ((this.width / 4) * note.strum);
+        });
     }
 }

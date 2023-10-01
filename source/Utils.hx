@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxSort;
 import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -88,5 +89,14 @@ class Utils
 		while (str.length < num)
 			str = '0${str}';
 		return str;
+	}
+
+	public static function sortNotesAsc(Obj1:Note, Obj2:Note):Int
+	{
+		return Utils.sortNotes(FlxSort.ASCENDING, Obj1, Obj2);
+	}
+	
+	public static function sortNotes(order:Int = FlxSort.ASCENDING, Obj1:Note, Obj2:Note) {
+		return FlxSort.byValues(order, Obj1.strumTime, Obj2.strumTime);
 	}
 }
