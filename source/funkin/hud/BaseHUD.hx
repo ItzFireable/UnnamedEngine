@@ -13,6 +13,8 @@ import flixel.util.FlxColor;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
 
+using StringTools;
+
 class BaseHUD extends FlxSpriteGroup {
     private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
@@ -45,9 +47,13 @@ class BaseHUD extends FlxSpriteGroup {
 		iconP2 = new HealthIcon(SONG.player2, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 
-        scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 190, healthBarBG.y + 30, 0, "", 20);
+        scoreTxt = new FlxText(0, healthBarBG.y + 30, 0, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		scoreTxt.scrollFactor.set();
+		
+        scoreTxt.screenCenter(X);
+        scoreTxt.scrollFactor.set();
+
+        this.noteHit();
 
 		this.add(scoreTxt);
 
@@ -68,6 +74,11 @@ class BaseHUD extends FlxSpriteGroup {
             healthBarBG.y = FlxG.height * 0.9;
     }
 
+    public function noteHit()
+    {
+        scoreTxt.text = 'Score: ' + PlayState.songScore;
+    }
+
     public function beatHit(beat) {
         iconP1.scale.set(1.15,1.15);
 		iconP2.scale.set(1.15,1.15);
@@ -82,7 +93,7 @@ class BaseHUD extends FlxSpriteGroup {
 
     override function update(elapsed:Float) {
         super.update(elapsed);
-        scoreTxt.text = "Score:" + PlayState.instance.songScore;
+        scoreTxt.screenCenter(X);
 
         var scale = FlxMath.lerp(1, iconP1.scale.x, FlxMath.bound(1 - (elapsed * 9), 0, 1));
 		iconP1.scale.set(scale,scale);

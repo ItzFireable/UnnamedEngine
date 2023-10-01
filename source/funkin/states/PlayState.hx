@@ -124,7 +124,7 @@ class PlayState extends MusicBeatState
 	var tankGround:BGSprite;
 
 	var talking:Bool = true;
-	public var songScore:Int = 0;
+	public static var songScore:Int = 0;
 
 	var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
@@ -2089,7 +2089,6 @@ class PlayState extends MusicBeatState
 		var score:Int = 350;
 
 		var daRating:String = "sick";
-
 		var isSick:Bool = true;
 
 		if (noteDiff > Conductor.safeZoneOffset * 0.9)
@@ -2172,6 +2171,8 @@ class PlayState extends MusicBeatState
 		});
 		if (combo >= 10 || combo == 0)
 			displayCombo();
+
+		HUD.noteHit();
 	}
 
 	function displayCombo():Void
@@ -2448,6 +2449,8 @@ class PlayState extends MusicBeatState
 		if (!practiceMode)
 			songScore -= 10;
 
+		HUD.noteHit();
+
 		vocals.volume = 0;
 		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 		
@@ -2464,26 +2467,6 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	/* not used anymore lol
-
-		function badNoteHit()
-		{
-			// just double pasting this shit cuz fuk u
-			// REDO THIS SYSTEM!
-			var leftP = controls.NOTE_LEFT_P;
-			var downP = controls.NOTE_DOWN_P;
-			var upP = controls.NOTE_UP_P;
-			var rightP = controls.NOTE_RIGHT_P;
-
-			if (leftP)
-				noteMiss(0);
-			if (downP)
-				noteMiss(1);
-			if (upP)
-				noteMiss(2);
-			if (rightP)
-				noteMiss(3);
-	}*/
 	function goodNoteHit(note:Note):Void
 	{
 		if (!note.wasGoodHit)
