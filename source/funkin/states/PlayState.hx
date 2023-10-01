@@ -1529,7 +1529,8 @@ class PlayState extends MusicBeatState
 				swagNote.altNote = songNotes[3];
 				swagNote.scrollFactor.set(0, 0);
 				swagNote.sustainLength = songNotes[2];
-				swagNote.strum = rawNoteData;
+
+				swagNote.strum = daNoteData;
 
 				var susLength:Float = swagNote.sustainLength;
 
@@ -1544,7 +1545,7 @@ class PlayState extends MusicBeatState
 					sustainNote.scrollFactor.set();
 					unspawnNotes.push(sustainNote);
 
-					sustainNote.strum = rawNoteData;
+					sustainNote.strum = swagNote.strum;
 					sustainNote.mustPress = gottaHitNote;
 
 					if (sustainNote.mustPress)
@@ -2481,25 +2482,22 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (playerStrums != null)
+		/*playerStrums.forEach(function(spr:FlxSprite)
 		{
-			playerStrums.forEach(function(spr:FlxSprite)
-			{
-				if (pressArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
-					spr.animation.play('pressed');
-				if (!holdArray[spr.ID])
-					spr.animation.play('static');
+			if (pressArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
+				spr.animation.play('pressed');
+			if (!holdArray[spr.ID])
+				spr.animation.play('static');
 
-				if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
-				{
-					spr.centerOffsets();
-					spr.offset.x -= 13;
-					spr.offset.y -= 13;
-				}
-				else
-					spr.centerOffsets();
-			});
-		}
+			if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
+			{
+				spr.centerOffsets();
+				spr.offset.x -= 13;
+				spr.offset.y -= 13;
+			}
+			else
+				spr.centerOffsets();
+		});*/
 	}
 
 	function noteMiss(direction:Int = 1):Void
@@ -2582,13 +2580,13 @@ class PlayState extends MusicBeatState
 					boyfriend.playAnim('singRIGHT', true);
 			}
 
-			playerStrums.forEach(function(spr:FlxSprite)
+			/*playerStrums.forEach(function(spr:FlxSprite)
 			{
 				if (Math.abs(note.noteData) == spr.ID)
 				{
 					spr.animation.play('confirm', true);
 				}
-			});
+			});*/
 
 			note.wasGoodHit = true;
 			vocals.volume = 1;

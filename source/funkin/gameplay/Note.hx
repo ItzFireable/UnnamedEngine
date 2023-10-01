@@ -1,4 +1,4 @@
-package funkin.objects;
+package funkin.gameplay;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -15,8 +15,8 @@ import polymod.format.ParseRules.TargetSignatureElement;
 
 class Note extends FlxSprite
 {
-	public var strumTime:Float = 0;
 	public var strum:Int = 0;
+	public var strumTime:Float = 0;
 
 	public var mustPress:Bool = false;
 	public var noteData:Int = 0;
