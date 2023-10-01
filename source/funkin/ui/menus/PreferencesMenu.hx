@@ -160,13 +160,8 @@ class PreferencesMenu extends OptionsState.Page
 	private static function preferenceCheck(prefString:String, prefValue:Dynamic):Void
 	{
 		if (preferences.get(prefString) == null)
-		{
 			preferences.set(prefString, prefValue);
-			trace('set preference!');
-		}
 		else
-		{
 			trace('found preference: ' + preferences.get(prefString));
-		}
 	}
 }

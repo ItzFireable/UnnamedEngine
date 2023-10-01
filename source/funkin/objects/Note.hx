@@ -16,6 +16,7 @@ import polymod.format.ParseRules.TargetSignatureElement;
 class Note extends FlxSprite
 {
 	public var strumTime:Float = 0;
+	public var strum:Int = 0;
 
 	public var mustPress:Bool = false;
 	public var noteData:Int = 0;
@@ -52,9 +53,7 @@ class Note extends FlxSprite
 
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
-
-		x += 50;
-		// MAKE SURE ITS DEFINITELY OFF SCREEN?
+		
 		y -= 2000;
 
 		this.strumTime = strumTime;

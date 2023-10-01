@@ -107,8 +107,8 @@ class Main extends Sprite
 		MemoryUtil.init();
 		FlxG.signals.postStateSwitch.add(onStateSwitchPost);
 
-		FlxG.updateFramerate = 999;
-		FlxG.drawFramerate = 999;
+		FlxG.updateFramerate = 144;
+		FlxG.drawFramerate = 144;
 	}
 
 	public static function refreshAssets()

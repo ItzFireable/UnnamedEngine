@@ -23,6 +23,7 @@ import funkin.utils.native.Linux;
 import funkin.hud.*;
 import funkin.utils.*;
 import funkin.objects.*;
+import funkin.gameplay.*;
 import funkin.framerate.*;
 
 import funkin.ui.atlas.Types;
@@ -41,5 +42,4 @@ import funkin.ui.mainmenu.*;
 import funkin.ui.menus.*;
 
 import funkin.states.*;
-import funkin.states.debug.*;
 import funkin.states.substates.*;
