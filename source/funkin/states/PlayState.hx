@@ -70,15 +70,15 @@ class PlayState extends MusicBeatState
 
 	private var unspawnNotes:Array<Note> = [];
 
-	private var strumLine:FlxSprite;
-	private var HUD:BaseHUD;
+	public var strumLine:FlxSprite;
+	public var HUD:BaseHUD;
 
 	private var camFollow:FlxObject;
 
 	private static var prevCamFollow:FlxObject;
 
-	private var strums:FlxTypedGroup<FlxSprite>;
-	private var strumlines:FlxTypedGroup<Strumline>;
+	public static var strums:FlxTypedGroup<FlxSprite>;
+	public static var strumlines:FlxTypedGroup<Strumline>;
 
 	private var currentStrumline:Int = 1;
 
@@ -742,7 +742,7 @@ class PlayState extends MusicBeatState
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 		FlxG.fixedTimestep = false;
 		
-		HUD = new BaseHUD(camHUD);
+		HUD = new ForeverHUD(camHUD);
 		HUD.update_settings();
 
 		add(HUD);
@@ -925,6 +925,27 @@ class PlayState extends MusicBeatState
 				swagNote.strumline = mustHitNote ? 0 : 1;
 
 				unspawnNotes.push(swagNote);
+
+				var sustainLength:Float = swagNote.sustainLength;
+				sustainLength = sustainLength / Conductor.stepCrochet; // Scale it 
+
+				var flooredLength:Int = Math.floor(sustainLength);
+				var prevNote = swagNote;
+
+				if (flooredLength > 0)
+				{
+					for (susNote in 0...flooredLength)
+					{
+						var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, prevNote, true);
+						sustainNote.scrollFactor.set();
+						
+						sustainNote.strum = daNoteData;
+						sustainNote.strumline = mustHitNote ? 0 : 1;
+
+						unspawnNotes.push(sustainNote);
+						prevNote = sustainNote;
+					}
+				}
 			}
 		}
 
@@ -1161,16 +1182,6 @@ class PlayState extends MusicBeatState
 			strumlines.members[_note.strumline].addNote(_note);
 			unspawnNotes.shift();
 		}
-		
-		strumlines.forEach(function(strumline:Strumline) {
-			strumline.forEach(function(strum:FlxSprite) {
-				if (strum.animation.finished)
-					strum.animation.play('static');
-	
-				strum.offset.set(strum.frameWidth / 2, strum.frameHeight / 2);
-				strum.centerOffsets();
-			});
-		});
 
 		if (generatedMusic)
 		{
@@ -1189,7 +1200,9 @@ class PlayState extends MusicBeatState
 					}
 
 					var lastJudgement = Judgements.judgementData[Judgements.judgementData.length - 1].hitbox;
-					daNote.canBeHit = (daNote.strumline == currentStrumline && Math.abs(daNote.strumTime - Conductor.songPosition) <= lastJudgement);
+
+					daNote.tooLate = (daNote.strumline == currentStrumline && (Conductor.songPosition - daNote.strumTime) > lastJudgement);
+					daNote.canBeHit = (daNote.strumline == currentStrumline && (Conductor.songPosition - daNote.strumTime) <= lastJudgement);
 					
 					var strum = strumline.members[daNote.strum];
 					var strumlineY = strum.y;
@@ -1250,12 +1263,8 @@ class PlayState extends MusicBeatState
 					}
 					else if (daNote.tooLate || daNote.wasHit)
 					{
-						if (daNote.tooLate)
-						{
-							health -= 0.0475;
-							vocals.volume = 0;
-							killCombo();
-						}
+						if (daNote.tooLate && daNote.strumline == currentStrumline)
+							noteMiss(daNote);
 	
 						strumline.killNote(daNote);
 					}
@@ -1366,7 +1375,6 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	// gives score and pops up rating
 	private function popUpScore(strumtime:Float, daNote:Note):Void
 	{
 		var noteDiff:Float = Math.abs(strumtime - Conductor.songPosition);
@@ -1554,29 +1562,28 @@ class PlayState extends MusicBeatState
 			camFollow.setPosition(target.getMidpoint().x, target.getMidpoint().y - 100);
 	}
 
-	function noteMiss(direction:Int = 1):Void
+	function noteMiss(note:Note):Void
 	{
-		health -= 0.04;
+		health -= note.missHealth;
 		killCombo();
 
-		if (!practiceMode)
-			score -= 10;
-
+		score -= 10;
 		HUD.noteHit();
 
 		vocals.volume = 0;
 		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 		
-		switch (direction)
+		var strumline = strumlines.members[note.strumline];
+		switch (note.noteData)
 		{
 			case 0:
-				boyfriend.playAnim('singLEFTmiss', true);
+				strumline.character.playAnim('singLEFTmiss', true);
 			case 1:
-				boyfriend.playAnim('singDOWNmiss', true);
+				strumline.character.playAnim('singDOWNmiss', true);
 			case 2:
-				boyfriend.playAnim('singUPmiss', true);
+				strumline.character.playAnim('singUPmiss', true);
 			case 3:
-				boyfriend.playAnim('singRIGHTmiss', true);
+				strumline.character.playAnim('singRIGHTmiss', true);
 		}
 	}
 

@@ -35,6 +35,7 @@ class Strumline extends FlxSpriteGroup {
             var babyArrow:FlxSprite = new FlxSprite(0, y);
 
             babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
+
             babyArrow.animation.addByPrefix('green', 'arrowUP');
             babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
             babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
@@ -70,9 +71,9 @@ class Strumline extends FlxSpriteGroup {
             babyArrow.updateHitbox();
             babyArrow.scrollFactor.set();
 
-            /*babyArrow.y -= 10;
+            babyArrow.y -= 10;
             babyArrow.alpha = 0;
-            FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});*/
+            FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 
             babyArrow.ID = i;
 
@@ -103,8 +104,20 @@ class Strumline extends FlxSpriteGroup {
 
     public override function update(elapsed:Float)
     {
+        var strumOffset = (this.width / 4);
+        
         notes.forEach(function(note:Note) {
-            note.x = this.x + ((this.width / 4) * note.strum);
+            note.x = this.x + (strumOffset * note.strum);
+            if (note.isSustainNote)
+                note.x += (strumOffset / 2) - (note.width / 2);
+        });
+
+        this.forEach(function(strum:FlxSprite) {
+            strum.centerOffsets();
+			strum.centerOrigin();
+
+            if (strum.animation.finished)
+                strum.animation.play('static');
         });
     }
 }

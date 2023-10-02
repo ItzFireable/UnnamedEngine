@@ -2,6 +2,8 @@ package funkin.inputs;
 
 import flixel.math.FlxMath;
 
+using extensions.ArrayExtensions;
+
 class Judgements {
     public static var FCLabel:String = "";
     public static var ScoreRating:String = "";
@@ -82,7 +84,7 @@ class Judgements {
 
                 var offset:Int = Std.int(Math.abs(values.length - judgementCount));
                 var i:Int = 0;
-                
+
                 for (value in values)
                 {
                     var judgementStat = PlayState.judgements.get(judgementData[i+offset].name);
@@ -123,7 +125,7 @@ class Judgements {
 
     public static function getJudgement(ms:Float)
     {
-        var curJudgement = judgementData[judgementData.length - 1];
+        var curJudgement = judgementData.last();
         for (judgement in judgementData)
         {
             if (ms <= judgement.hitbox)
