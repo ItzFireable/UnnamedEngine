@@ -18,13 +18,12 @@ import flixel.group.FlxSpriteGroup;
 
 class Strumline extends FlxSpriteGroup {
     private var targetCamera:FlxCamera;
-    public var notes:FlxTypedGroup<Note>;
 
+    public var notes:FlxTypedGroup<Note>;
     public var character:Character;
 
     public function new(y:Float, camera:FlxCamera) {
         super();
-
         targetCamera = camera;
 
         notes = new FlxTypedGroup<Note>();
@@ -48,22 +47,22 @@ class Strumline extends FlxSpriteGroup {
             {
                 case 0:
                     babyArrow.x += Note.swagWidth * 0;
-                    babyArrow.animation.addByPrefix('static', 'arrow static instance 1');
+                    babyArrow.animation.addByPrefix('static', 'arrow static left');
                     babyArrow.animation.addByPrefix('pressed', 'left press', 24, false);
                     babyArrow.animation.addByPrefix('confirm', 'left confirm', 24, false);
                 case 1:
                     babyArrow.x += Note.swagWidth * 1;
-                    babyArrow.animation.addByPrefix('static', 'arrow static instance 2');
+                    babyArrow.animation.addByPrefix('static', 'arrow static down');
                     babyArrow.animation.addByPrefix('pressed', 'down press', 24, false);
                     babyArrow.animation.addByPrefix('confirm', 'down confirm', 24, false);
                 case 2:
                     babyArrow.x += Note.swagWidth * 2;
-                    babyArrow.animation.addByPrefix('static', 'arrow static instance 4');
+                    babyArrow.animation.addByPrefix('static', 'arrow static up');
                     babyArrow.animation.addByPrefix('pressed', 'up press', 24, false);
                     babyArrow.animation.addByPrefix('confirm', 'up confirm', 24, false);
                 case 3:
                     babyArrow.x += Note.swagWidth * 3;
-                    babyArrow.animation.addByPrefix('static', 'arrow static instance 3');
+                    babyArrow.animation.addByPrefix('static', 'arrow static right');
                     babyArrow.animation.addByPrefix('pressed', 'right press', 24, false);
                     babyArrow.animation.addByPrefix('confirm', 'right confirm', 24, false);
             }
@@ -80,7 +79,7 @@ class Strumline extends FlxSpriteGroup {
             babyArrow.animation.play('static');
             this.add(babyArrow);
         }
-        
+
         for (object in this)
             object.cameras = [targetCamera];
     }
@@ -104,20 +103,13 @@ class Strumline extends FlxSpriteGroup {
 
     public override function update(elapsed:Float)
     {
+        super.update(elapsed);
         var strumOffset = (this.width / 4);
         
         notes.forEach(function(note:Note) {
             note.x = this.x + (strumOffset * note.strum);
             if (note.isSustainNote)
                 note.x += (strumOffset / 2) - (note.width / 2);
-        });
-
-        this.forEach(function(strum:FlxSprite) {
-            strum.centerOffsets();
-			strum.centerOrigin();
-
-            if (strum.animation.finished)
-                strum.animation.play('static');
         });
     }
 }

@@ -50,20 +50,13 @@ class PauseSubState extends MusicBeatSubstate
 		add(bg);
 
 		var levelInfo:FlxText = new FlxText(20, 0, 0, "", 24);
-		levelInfo.text += PlayState.SONG.song;
+		levelInfo.text = PlayState.SONG.song + " - " + Utils.difficultyString();
 		levelInfo.scrollFactor.set();
 		levelInfo.setFormat(Paths.font("vcr.ttf"), 24);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
-		var levelDifficulty:FlxText = new FlxText(20, levelInfo.height, 0, "", 24);
-		levelDifficulty.text += Utils.difficultyString();
-		levelDifficulty.scrollFactor.set();
-		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 24);
-		levelDifficulty.updateHitbox();
-		add(levelDifficulty);
-
-		var deathCounter:FlxText = new FlxText(20, levelDifficulty.y + levelDifficulty.height, 0, "", 24);
+		var deathCounter:FlxText = new FlxText(20, levelInfo.y + levelInfo.height, 0, "", 24);
 		deathCounter.text = "Deaths: " + PlayState.deathCounter;
 		deathCounter.scrollFactor.set();
 		deathCounter.setFormat(Paths.font('vcr.ttf'), 24);
@@ -78,18 +71,15 @@ class PauseSubState extends MusicBeatSubstate
 		practiceText.visible = PlayState.practiceMode;
 		add(practiceText);
 
-		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
 		deathCounter.alpha = 0;
 
 		levelInfo.x = FlxG.width - (levelInfo.width) - 8;
-		levelDifficulty.x = FlxG.width - (levelDifficulty.width) - 8;
 		deathCounter.x = FlxG.width - (deathCounter.width) - 8;
 
 		FlxTween.tween(bg, {alpha: 0.5}, 0.5, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 8}, 0.5, {ease: FlxEase.quartInOut, startDelay: 0.25});
-		FlxTween.tween(levelDifficulty, {alpha: 1, y: 8 + levelInfo.height + 4}, 0.5, {ease: FlxEase.quartInOut, startDelay: 0.5});
-		FlxTween.tween(deathCounter, {alpha: 1, y: deathCounter.y + 5}, 0.5, {ease: FlxEase.quartInOut, startDelay: 0.75});
+		FlxTween.tween(deathCounter, {alpha: 1, y: 8 + levelInfo.height}, 0.5, {ease: FlxEase.quartInOut, startDelay: 0.75});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
