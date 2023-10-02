@@ -181,10 +181,6 @@ class Note extends FlxSprite
 	{
 		super.update(elapsed);
 
-		canBeHit = false;
-		if (strumTime <= Conductor.songPosition)
-			wasGoodHit = true;
-
 		if (tooLate)
 		{
 			if (alpha > 0.3)

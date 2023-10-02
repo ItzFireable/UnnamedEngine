@@ -72,11 +72,19 @@ class BaseHUD extends FlxSpriteGroup {
 			healthBarBG.y = FlxG.height * 0.1;
         else
             healthBarBG.y = FlxG.height * 0.9;
+
+        healthBar.x = healthBarBG.x + 4;
+        healthBar.y = healthBarBG.y + 4;
+
+		iconP1.y = healthBar.y - (iconP1.height / 2);
+		iconP2.y = healthBar.y - (iconP2.height / 2);
+
+        scoreTxt.y = healthBarBG.y + 30;
     }
 
     public function noteHit()
     {
-        scoreTxt.text = 'Score: ' + PlayState.songScore;
+        scoreTxt.text = 'Score: ' + PlayState.score;
     }
 
     public function beatHit(beat) {

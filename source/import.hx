@@ -2,7 +2,6 @@ import Paths;
 
 import lib.*;
 import misc.*;
-import inputs.*;
 
 import shaders.Types;
 import shaders.*;
@@ -22,6 +21,7 @@ import funkin.utils.native.Linux;
 
 import funkin.hud.*;
 import funkin.utils.*;
+import funkin.inputs.*;
 import funkin.objects.*;
 import funkin.gameplay.*;
 import funkin.framerate.*;

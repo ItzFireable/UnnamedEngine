@@ -1,4 +1,4 @@
-package inputs;
+package funkin.inputs;
 
 import flixel.FlxG;
 import flixel.input.FlxInput;
