@@ -1,38 +1,125 @@
 package funkin.inputs;
 
+import flixel.math.FlxMath;
+
 class Judgements {
-    public static var judgementData:Array<Dynamic> = [
+    public static var FCLabel:String = "";
+    public static var ScoreRating:String = "";
+
+    public static var judgementData = [
         {
             name: 'Sick',
             score: 350,
             accuracy: 1,
             hitbox: 45,
+            labels: ['SFC','SDS']
         },
         {
             name: 'Good',
             score: 350,
             accuracy: 1,
             hitbox: 90,
+            labels: ['GFC','SDG']
         },
         {
             name: 'Bad',
             score: 350,
             accuracy: 1,
             hitbox: 135,
+            labels: ['BFC','SDB']
         },
         {
             name: 'Shit',
             score: 350,
             accuracy: 1,
             hitbox: 180,
+            labels: ['FC']
         },
         {
             name: 'Miss',
             score: 350,
             accuracy: 1,
             hitbox: 210,
+            labels: ['SDCB']
         },
     ];
+
+    public static var scoreRating:Map<String, Int> = [
+        "S+" => 100,
+        "S" => 95,
+        "A" => 90,
+        "b" => 85,
+        "c" => 80,
+        "d" => 75,
+        "e" => 70,
+        "f" => 65,
+    ];
+
+    public static var fcLabels:Map<String, Array<Int>> = [
+        // FC with different stats
+        "SFC" => [0,0,0,0],
+        "GFC" => [0,0,0],
+        "BFC" => [0,0],
+        "FC" => [0],
+
+        "SDS" => [9,0,0,0,0],
+        "SDG" => [9,0,0,0],
+        "SDB" => [9,0,0],
+        "SDCB" => [9]
+    ];
+
+    public static function updateFCDisplay()
+    {
+        var judgementCount = Lambda.count(PlayState.judgements);
+        var foundJudgement = false;
+
+        for (judgement in judgementData)
+        {
+            for (label in judgement.labels)
+            {
+                var values = fcLabels.get(label);
+                var isJudgement = true;
+
+                var offset:Int = Std.int(Math.abs(values.length - judgementCount));
+                var i:Int = 0;
+                
+                for (value in values)
+                {
+                    var judgementStat = PlayState.judgements.get(judgementData[i+offset].name);
+                    if (judgementStat > value)
+                        isJudgement = false;
+
+                    i++;
+                }
+
+                if (isJudgement)
+                {
+                    FCLabel = label;
+                    foundJudgement = true;
+
+                    return;
+                }
+            }
+        }
+
+        if (!foundJudgement)
+            FCLabel = 'CLEAR';
+    }
+
+    public static function updateScoreRating()
+    {
+        var biggest:Int = 0;
+        var accuracy:Float = FlxMath.roundDecimal(PlayState.accuracy * 100, 2);
+
+		for (score in scoreRating.keys())
+		{
+			if ((scoreRating.get(score) <= accuracy) && (scoreRating.get(score) >= biggest))
+			{
+				biggest = scoreRating.get(score);
+				ScoreRating = score;
+			}
+		}
+    }
 
     public static function getJudgement(ms:Float)
     {

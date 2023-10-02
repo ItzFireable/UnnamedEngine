@@ -19,20 +19,21 @@ class Note extends FlxSprite
 	public var strumline:Int = 0;
 	public var strumTime:Float = 0;
 
-	public var noteData:Int = 0;
-	public var canBeHit:Bool = false;
-	public var tooLate:Bool = false;
-	public var wasGoodHit:Bool = false;
 	public var prevNote:Note;
+	public var noteData:Int = 0;
+	
+	public var wasHit:Bool = false;
+	public var tooLate:Bool = false;
+	public var canBeHit:Bool = false;
 
-	private var willMiss:Bool = false;
+	public var hitHealth:Float = 0.025;
 	public var noteType:String = "";
 
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
-	public var noteScore:Float = 1;
 
-	public static var swagWidth:Float = 160 * 0.7;
+	public static var swagWidth:Float = 112;
+
 	public static var PURP_NOTE:Int = 0;
 	public static var GREEN_NOTE:Int = 2;
 	public static var BLUE_NOTE:Int = 1;
@@ -130,7 +131,6 @@ class Note extends FlxSprite
 		}
 		if (isSustainNote && prevNote != null)
 		{
-			noteScore * 0.2;
 			alpha = 0.6;
 
 			if (PreferencesMenu.getPref('downscroll'))

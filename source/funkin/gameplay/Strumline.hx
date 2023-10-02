@@ -20,6 +20,8 @@ class Strumline extends FlxSpriteGroup {
     private var targetCamera:FlxCamera;
     public var notes:FlxTypedGroup<Note>;
 
+    public var character:Character;
+
     public function new(y:Float, camera:FlxCamera) {
         super();
 
@@ -86,6 +88,17 @@ class Strumline extends FlxSpriteGroup {
     {
         notes.add(newNote);
         notes.sort(Utils.sortNotes, FlxSort.DESCENDING);
+    }
+
+    public function killNote(note:Note)
+    {
+        note.active = false;
+		note.visible = false;
+
+        notes.remove(note, true);
+
+        note.kill();
+		note.destroy();
     }
 
     public override function update(elapsed:Float)
