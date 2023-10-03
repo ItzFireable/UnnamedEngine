@@ -1,4 +1,5 @@
 package funkin.ui.mainmenu;
+
 import flixel.graphics.frames.FlxAtlasFrames;
 
 class MainMenuList extends MenuTypedList<MainMenuItem>

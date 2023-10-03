@@ -1,6 +1,7 @@
 package funkin;
 
 import flixel.graphics.frames.FlxAtlasFrames;
+
 typedef AtlasAsset = flixel.util.typeLimit.OneOfTwo<String, FlxAtlasFrames>;
 
 typedef BPMChangeEvent =

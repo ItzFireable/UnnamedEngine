@@ -21,7 +21,7 @@ class Note extends FlxSprite
 
 	public var prevNote:Note;
 	public var noteData:Int = 0;
-	
+
 	public var wasHit:Bool = false;
 	public var tooLate:Bool = false;
 	public var canBeHit:Bool = false;
@@ -53,7 +53,7 @@ class Note extends FlxSprite
 		isSustainNote = sustainNote;
 
 		scrollFactor.set(0, 0);
-		
+
 		y -= 2000;
 
 		this.strumTime = strumTime;
@@ -91,7 +91,7 @@ class Note extends FlxSprite
 			case 3:
 				animation.play('redScroll');
 		}
-		
+
 		if (isSustainNote && prevNote != null)
 		{
 			alpha = 0.6;

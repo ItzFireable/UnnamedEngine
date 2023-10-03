@@ -7,15 +7,8 @@ import flixel.math.FlxPoint;
 
 class GameCamera extends FlxCamera
 {
-	/**
-	 * properly follow framerate
-	 * most of this just copied from FlxCamera,
-	 * only lines 96 and 97 are changed
-	 */
 	override public function updateFollow():Void
 	{
-		// Either follow the object closely,
-		// or double check our deadzone and update accordingly.
 		if (deadzone == null)
 		{
 			target.getMidpoint(_point);
@@ -92,7 +85,6 @@ class GameCamera extends FlxCamera
 			}
 			else
 			{
-				// THIS THE PART THAT ACTUALLY MATTERS LOL
 				scroll.x += (_scrollTarget.x - scroll.x) * Utils.camLerpShit(followLerp);
 				scroll.y += (_scrollTarget.y - scroll.y) * Utils.camLerpShit(followLerp);
 			}

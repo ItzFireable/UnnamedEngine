@@ -1,6 +1,5 @@
 package funkin.objects;
 
-
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;

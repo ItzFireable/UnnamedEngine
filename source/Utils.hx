@@ -95,8 +95,9 @@ class Utils
 	{
 		return Utils.sortNotes(FlxSort.ASCENDING, Obj1, Obj2);
 	}
-	
-	public static function sortNotes(order:Int = FlxSort.ASCENDING, Obj1:Note, Obj2:Note) {
+
+	public static function sortNotes(order:Int = FlxSort.ASCENDING, Obj1:Note, Obj2:Note)
+	{
 		return FlxSort.byValues(order, Obj1.strumTime, Obj2.strumTime);
 	}
 }

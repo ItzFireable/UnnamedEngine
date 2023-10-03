@@ -44,7 +44,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		FlxG.sound.list.add(pauseMusic);
 
-		var bg:FlxSprite = new FlxSprite(-FlxG.width/2, -FlxG.height/2).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+		var bg:FlxSprite = new FlxSprite(-FlxG.width / 2, -FlxG.height / 2).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		bg.alpha = 0;
 		bg.scrollFactor.set();
 		add(bg);
@@ -52,20 +52,20 @@ class PauseSubState extends MusicBeatSubstate
 		var levelInfo:FlxText = new FlxText(20, 0, 0, "", 24);
 		levelInfo.text = PlayState.SONG.song + " - " + Utils.difficultyString();
 		levelInfo.scrollFactor.set();
-		levelInfo.setFormat(Paths.font("vcr.ttf"), 24);
+		levelInfo.setFormat(Paths.font("VCR.ttf"), 24);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
 		var deathCounter:FlxText = new FlxText(20, levelInfo.y + levelInfo.height, 0, "", 24);
 		deathCounter.text = "Deaths: " + PlayState.deathCounter;
 		deathCounter.scrollFactor.set();
-		deathCounter.setFormat(Paths.font('vcr.ttf'), 24);
+		deathCounter.setFormat(Paths.font('VCR.ttf'), 24);
 		deathCounter.updateHitbox();
 		add(deathCounter);
 
 		practiceText = new FlxText(20, deathCounter.y + deathCounter.height, 0, "PRACTICE MODE", 24);
 		practiceText.scrollFactor.set();
-		practiceText.setFormat(Paths.font('vcr.ttf'), 24);
+		practiceText.setFormat(Paths.font('VCR.ttf'), 24);
 		practiceText.updateHitbox();
 		practiceText.x = FlxG.width - (practiceText.width + 20);
 		practiceText.visible = PlayState.practiceMode;

@@ -1,4 +1,5 @@
 package funkin.ui.atlas;
+
 import flixel.graphics.frames.FlxAtlasFrames;
 
 class AtlasMenuList extends MenuTypedList<AtlasMenuItem>

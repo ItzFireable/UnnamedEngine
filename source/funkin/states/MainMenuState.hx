@@ -15,6 +15,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
+
 using StringTools;
 
 #if discord_rpc

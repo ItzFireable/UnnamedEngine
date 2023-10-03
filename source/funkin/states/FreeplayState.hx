@@ -113,14 +113,14 @@ class FreeplayState extends MusicBeatState
 		}
 
 		scoreText = new FlxText(0, 8, 0, "", 32);
-		scoreText.setFormat(Paths.font("vcr.ttf"), 28, FlxColor.WHITE, RIGHT);
+		scoreText.setFormat(Paths.font("VCR.ttf"), 28, FlxColor.WHITE, RIGHT);
 
 		scoreBG = new FlxSprite(0, 4).makeGraphic(1, 1, 0xBF000000);
 		scoreBG.antialiasing = false;
-		
+
 		diffText = new FlxText(0, scoreText.y + scoreText.height, 0, "", 20);
 		diffText.font = scoreText.font;
-		
+
 		add(scoreBG);
 		add(diffText);
 		add(scoreText);
@@ -254,7 +254,7 @@ class FreeplayState extends MusicBeatState
 	function positionHighscore()
 	{
 		scoreText.x = FlxG.width - scoreText.width - 4;
-	
+
 		diffText.x = Std.int(scoreText.x + scoreText.width / 2);
 		diffText.x -= (diffText.width / 2);
 
