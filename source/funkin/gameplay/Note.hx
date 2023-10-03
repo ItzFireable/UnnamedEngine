@@ -7,8 +7,6 @@ import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
-using StringTools;
-
 #if polymod
 import polymod.format.ParseRules.TargetSignatureElement;
 #end

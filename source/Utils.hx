@@ -12,8 +12,6 @@ import haxe.Json;
 import lime.math.Rectangle;
 import lime.utils.Assets;
 
-using StringTools;
-
 class Utils
 {
 	public static var difficultyArray:Array<String> = ['EASY', "NORMAL", "HARD"];

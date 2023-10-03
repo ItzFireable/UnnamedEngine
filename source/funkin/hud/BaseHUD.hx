@@ -10,8 +10,6 @@ import flixel.util.FlxColor;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
 
-using StringTools;
-
 class BaseHUD extends FlxSpriteGroup
 {
 	private var font:String = 'VCR';

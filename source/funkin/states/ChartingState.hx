@@ -29,8 +29,6 @@ import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
 
-using StringTools;
-
 class ChartingState extends MusicBeatState
 {
 	var _file:FileReference;

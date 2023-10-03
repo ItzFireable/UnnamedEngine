@@ -4,8 +4,6 @@ import haxe.Json;
 import haxe.format.JsonParser;
 import lime.utils.Assets;
 
-using StringTools;
-
 class Section
 {
 	public var sectionNotes:Array<Dynamic> = [];

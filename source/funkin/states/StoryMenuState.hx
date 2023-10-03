@@ -16,8 +16,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
 
-using StringTools;
-
 class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;

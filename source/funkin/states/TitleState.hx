@@ -32,8 +32,6 @@ import openfl.net.NetStream;
 import shaders.BuildingShaders.BuildingShader;
 import shaders.BuildingShaders;
 
-using StringTools;
-
 #if discord_rpc
 import Discord.DiscordClient;
 #end

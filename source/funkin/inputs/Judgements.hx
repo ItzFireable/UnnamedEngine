@@ -19,30 +19,30 @@ class Judgements
 		},
 		{
 			name: 'Good',
-			score: 350,
-			accuracy: 1,
+			score: 300,
+			accuracy: 0.9,
 			hitbox: 90,
 			labels: ['GFC', 'SDG']
 		},
 		{
 			name: 'Bad',
-			score: 350,
-			accuracy: 1,
+			score: 200,
+			accuracy: 0.8,
 			hitbox: 135,
 			labels: ['BFC', 'SDB']
 		},
 		{
 			name: 'Shit',
-			score: 350,
-			accuracy: 1,
+			score: 100,
+			accuracy: 0.6,
 			hitbox: 180,
 			labels: ['FC']
 		},
 		{
 			name: 'Miss',
-			score: 350,
-			accuracy: 1,
-			hitbox: 210,
+			score: 0,
+			accuracy: 0,
+			hitbox: 190,
 			labels: ['SDCB']
 		},
 	];
@@ -55,7 +55,7 @@ class Judgements
 		"C" => 80,
 		"D" => 75,
 		"E" => 70,
-		"F" => 65,
+		"F" => 0,
 	];
 
 	public static var fcLabels:Map<String, Array<Int>> = [
@@ -111,7 +111,7 @@ class Judgements
 	public static function updateScoreRating()
 	{
 		var biggest:Int = 0;
-		var accuracy:Float = FlxMath.roundDecimal(PlayState.accuracy * 100, 2);
+		var accuracy:Float = FlxMath.roundDecimal(PlayState.accuracy, 2);
 
 		for (score in scoreRating.keys())
 		{

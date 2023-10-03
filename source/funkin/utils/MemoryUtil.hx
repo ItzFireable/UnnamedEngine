@@ -11,8 +11,6 @@ import neko.vm.Gc;
 #end
 import openfl.system.System;
 
-using StringTools;
-
 class MemoryUtil
 {
 	public static var disableCount:Int = 0;

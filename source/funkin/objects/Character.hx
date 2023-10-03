@@ -7,8 +7,6 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxSort;
 import haxe.io.Path;
 
-using StringTools;
-
 class Character extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;

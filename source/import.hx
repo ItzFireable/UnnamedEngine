@@ -31,3 +31,5 @@ import funkin.ui.mainmenu.*;
 import funkin.ui.menus.*;
 import funkin.states.*;
 import funkin.states.substates.*;
+
+using StringTools;

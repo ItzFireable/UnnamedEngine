@@ -111,5 +111,10 @@ class Strumline extends FlxSpriteGroup
 			if (note.isSustainNote)
 				note.x += (strumOffset / 2) - (note.width / 2);
 		});
+
+		if ((ID == PlayState.currentStrumline && !Inputs.keys.contains(true)) || ID != PlayState.currentStrumline)
+			if (character.holdTimer > Conductor.stepCrochet * 4 * 0.001)
+				if (character.animation.curAnim.name.startsWith('sing') && !character.animation.curAnim.name.endsWith('miss'))
+					character.playAnim('idle');
 	}
 }

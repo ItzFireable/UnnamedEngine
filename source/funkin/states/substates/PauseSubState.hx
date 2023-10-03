@@ -20,7 +20,6 @@ class PauseSubState extends MusicBeatSubstate
 		'Resume',
 		'Restart Song',
 		'Change Difficulty',
-		'Toggle Practice Mode',
 		'Exit to menu'
 	];
 	var difficultyChoices:Array<String> = ['EASY', 'NORMAL', 'HARD', 'BACK'];
@@ -62,14 +61,6 @@ class PauseSubState extends MusicBeatSubstate
 		deathCounter.setFormat(Paths.font('VCR.ttf'), 24);
 		deathCounter.updateHitbox();
 		add(deathCounter);
-
-		practiceText = new FlxText(20, deathCounter.y + deathCounter.height, 0, "PRACTICE MODE", 24);
-		practiceText.scrollFactor.set();
-		practiceText.setFormat(Paths.font('VCR.ttf'), 24);
-		practiceText.updateHitbox();
-		practiceText.x = FlxG.width - (practiceText.width + 20);
-		practiceText.visible = PlayState.practiceMode;
-		add(practiceText);
 
 		levelInfo.alpha = 0;
 		deathCounter.alpha = 0;
@@ -141,10 +132,6 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.storyDifficulty = curSelected;
 
 					FlxG.resetState();
-
-				case 'Toggle Practice Mode':
-					PlayState.practiceMode = !PlayState.practiceMode;
-					practiceText.visible = PlayState.practiceMode;
 
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;

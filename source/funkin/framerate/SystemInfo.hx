@@ -1,7 +1,5 @@
 package funkin.framerate;
 
-using StringTools;
-
 class SystemInfo extends FramerateCategory
 {
 	public static var osInfo:String = "Unknown";

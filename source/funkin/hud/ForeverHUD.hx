@@ -14,7 +14,7 @@ class ForeverHUD extends BaseHUD
 	override public function noteHit()
 	{
 		generateRating();
-		scoreTxt.text = "Score: " + PlayState.score + " - Accuracy: " + FlxMath.roundDecimal(PlayState.accuracy * 100, 2) + "% [" + Judgements.FCLabel
+		scoreTxt.text = "Score: " + PlayState.score + " - Accuracy: " + FlxMath.roundDecimal(PlayState.accuracy, 2) + "% [" + Judgements.FCLabel
 			+ "] - Combo Breaks: " + PlayState.judgements.get("Miss") + " - Rank: " + Judgements.ScoreRating;
 		scoreTxt.screenCenter(X);
 	}

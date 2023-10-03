@@ -90,7 +90,7 @@ class UnnamedHUD extends BaseHUD
 	override public function noteHit()
 	{
 		generateRating();
-		scoreTxt.text = "Score: " + PlayState.score + " // Misses: " + PlayState.judgements.get("Miss") + " // Accuracy: " + FlxMath.roundDecimal(PlayState.accuracy * 100, 2) + "% [" + Judgements.FCLabel
+		scoreTxt.text = "Score: " + PlayState.score + " // Misses: " + PlayState.judgements.get("Miss") + " // Accuracy: " + FlxMath.roundDecimal(PlayState.accuracy, 2) + "% [" + Judgements.FCLabel
 			+ "] // Rank: " + Judgements.ScoreRating + " // Combo: " + PlayState.combo;
 		scoreTxt.screenCenter(X);
 

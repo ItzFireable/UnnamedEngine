@@ -2,8 +2,6 @@ package funkin.objects;
 
 import flixel.FlxSprite;
 
-using StringTools;
-
 class HealthIcon extends FlxSprite
 {
 	/**

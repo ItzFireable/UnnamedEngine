@@ -7,8 +7,6 @@ import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
 
-using StringTools;
-
 /**
  * Loosley based on FlxTypeText lolol
  */
