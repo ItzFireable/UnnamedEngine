@@ -1647,6 +1647,7 @@ class PlayState extends MusicBeatState
 		}
 
 		var char = characters.get(curStrumline.character);
+		
 		switch (note.noteData)
 		{
 			case 0:
