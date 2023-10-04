@@ -123,7 +123,6 @@ class ChartingState extends MusicBeatState
 		FlxG.save.bind('funkin', 'fireable');
 
 		tempBpm = _song.bpm;
-
 		addSection();
 
 		// sections = _song.notes;
@@ -219,7 +218,7 @@ class ChartingState extends MusicBeatState
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 
-		var characters:Array<String> = Utils.coolTextFile(Paths.txt('characterList'));
+		var characters:Array<String> = Utils.getCharacters();
 
 		var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{

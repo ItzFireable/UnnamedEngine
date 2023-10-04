@@ -31,6 +31,7 @@ class Main extends Sprite
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 
 	public static var fpsVar:FPS;
+	public static var ShowWatermarks:Bool = true;
 	public static var forceGPUOnlyBitmapsOff:Bool = false;
 
 	#if !mobile

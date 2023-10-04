@@ -12,6 +12,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
+import flixel.util.FlxSort;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
@@ -93,8 +94,9 @@ class MainMenuState extends MusicBeatState
 		menuItems.createItem('options', function() startExitState(new OptionsState()));
 
 		// center vertically
-		var spacing = 160;
+		var spacing = 128;
 		var top = (FlxG.height - (spacing * (menuItems.length - 1))) / 2;
+
 		for (i in 0...menuItems.length)
 		{
 			var menuItem = menuItems.members[i];
@@ -103,19 +105,19 @@ class MainMenuState extends MusicBeatState
 		}
 
 		FlxG.cameras.reset(new GameCamera());
-		FlxG.camera.follow(camFollow, null, 0.06);
-		// FlxG.camera.setScrollBounds(bg.x, bg.x + bg.width, bg.y, bg.y + bg.height * 1.2);
+		FlxG.camera.follow(camFollow, LOCKON, 0.05);
+		FlxG.camera.focusOn(camFollow.getPosition());
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "v" + Application.current.meta.get('version'), 12);
+		var versionShit:FlxText = new FlxText(4, 4, 0, "Unnamed Engine v0.1", 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
-
-		versionShit.text += '(Newgrounds exclusive preview)';
-
-		// NG.core.calls.event.logEvent('swag').send();
+		
+		versionShit.text += "\nFunkin' v" + Application.current.meta.get('version') + ' (Newgrounds exclusive preview)';
+		versionShit.y = FlxG.height - versionShit.height - 4;
 
 		super.create();
+		onMenuItemChange(menuItems.selectedItem);
 	}
 
 	override function finishTransIn()
@@ -167,13 +169,9 @@ class MainMenuState extends MusicBeatState
 		menuItems.forEach(function(item)
 		{
 			if (menuItems.selectedIndex != item.ID)
-			{
 				FlxTween.tween(item, {alpha: 0}, duration, {ease: FlxEase.quadOut});
-			}
 			else
-			{
 				item.visible = false;
-			}
 		});
 
 		new FlxTimer().start(duration, function(_) FlxG.switchState(state));
@@ -181,12 +179,8 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		// FlxG.camera.followLerp = Utils.camLerpShit(0.06);
-
 		if (FlxG.sound.music.volume < 0.8)
-		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
-		}
 
 		if (_exiting)
 			menuItems.enabled = false;

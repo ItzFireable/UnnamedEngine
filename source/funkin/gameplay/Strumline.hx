@@ -16,13 +16,17 @@ import flixel.group.FlxSpriteGroup;
 class Strumline extends FlxSpriteGroup
 {
 	private var targetCamera:FlxCamera;
+	public var yOffset:Float = FlxG.height;
 
 	public var notes:FlxTypedGroup<Note>;
-	public var character:Character;
+	public var character:String = null;
 
-	public function new(y:Float, camera:FlxCamera)
+	public function new(_y:Float, camera:FlxCamera)
 	{
 		super();
+		y = _y;
+
+		scrollFactor.set();
 		targetCamera = camera;
 
 		notes = new FlxTypedGroup<Note>();
@@ -30,7 +34,7 @@ class Strumline extends FlxSpriteGroup
 
 		for (i in 0...4)
 		{
-			var babyArrow:FlxSprite = new FlxSprite(0, y);
+			var babyArrow:FlxSprite = new FlxSprite(0, 0);
 
 			babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
 
@@ -69,9 +73,9 @@ class Strumline extends FlxSpriteGroup
 			babyArrow.updateHitbox();
 			babyArrow.scrollFactor.set();
 
-			babyArrow.y -= 10;
+			babyArrow.y = this.y - 10;
 			babyArrow.alpha = 0;
-			FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+			FlxTween.tween(babyArrow, {y: this.y, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 
 			babyArrow.ID = i;
 
@@ -85,6 +89,8 @@ class Strumline extends FlxSpriteGroup
 
 	public function addNote(newNote:Note)
 	{
+		newNote.scrollFactor = this.scrollFactor;
+
 		notes.add(newNote);
 		notes.sort(Utils.sortNotes, FlxSort.DESCENDING);
 	}
@@ -112,9 +118,45 @@ class Strumline extends FlxSpriteGroup
 				note.x += (strumOffset / 2) - (note.width / 2);
 		});
 
-		if ((ID == PlayState.currentStrumline && !Inputs.keys.contains(true)) || ID != PlayState.currentStrumline)
-			if (character.holdTimer > Conductor.stepCrochet * 4 * 0.001)
-				if (character.animation.curAnim.name.startsWith('sing') && !character.animation.curAnim.name.endsWith('miss'))
-					character.playAnim('idle');
+		if (character != null)
+		{
+			var char = PlayState.characters.get(character);
+			if (char == null) return;
+
+			if (char.holdTimer >= Conductor.stepCrochet * 4 * 0.001) // Check if character held for long enough time
+			{
+				if (ID != PlayState.currentStrumline) // For non player characters
+				{
+					char.holdTimer = 0; // Reset hold
+					char.playAnim('idle');
+				}
+				else
+					if (char.animation.curAnim.name.startsWith('sing') && !char.animation.curAnim.name.endsWith('miss') && !Inputs.keys.contains(true)) // For player characters
+						char.playAnim('idle');
+			}
+
+			if (PlayState.cameraTarget == char) // TODO: Add setting check
+			{
+				var offset = char.camOffset;
+				switch(char.animation.curAnim.name)
+				{
+					case 'singLEFT':
+						PlayState.camOffset[0] = -offset;
+						PlayState.camOffset[1] = 0;
+					case 'singRIGHT':
+						PlayState.camOffset[0] = offset;
+						PlayState.camOffset[1] = 0;
+					case 'singUP':
+						PlayState.camOffset[0] = 0;
+						PlayState.camOffset[1] = -offset;
+					case 'singDOWN':
+						PlayState.camOffset[0] = 0;
+						PlayState.camOffset[1] = offset;
+					case 'idle' | 'danceLeft' | 'danceRight':
+						PlayState.camOffset[0] = 0;
+						PlayState.camOffset[1] = 0;
+				}
+			}
+		}
 	}
 }

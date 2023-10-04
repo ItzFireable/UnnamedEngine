@@ -1,5 +1,8 @@
 package;
 
+import sys.FileSystem;
+import flixel.FlxSprite;
+import flixel.FlxObject;
 import flixel.util.FlxSort;
 import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
@@ -97,5 +100,24 @@ class Utils
 	public static function sortNotes(order:Int = FlxSort.ASCENDING, Obj1:Note, Obj2:Note)
 	{
 		return FlxSort.byValues(order, Obj1.strumTime, Obj2.strumTime);
+	}
+
+	public static function getCharacters():Array<String>
+	{
+		var chars:Array<String> = [];
+		var directory:String = 'assets/data/characters';
+
+		if (FileSystem.exists(directory))
+			for (file in FileSystem.readDirectory(directory))
+			{
+				var path = haxe.io.Path.join([directory, file]);
+				if (!sys.FileSystem.isDirectory(path) && file.endsWith('.json'))
+					chars.push(file);
+			}
+
+		for (i in 0...chars.length)
+			chars[i] = StringTools.replace(chars[i], '.json', '');
+
+		return chars;
 	}
 }
