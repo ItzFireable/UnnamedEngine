@@ -987,29 +987,6 @@ class ChartingState extends MusicBeatState
 		return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, gridBG.y + gridBG.height);
 	}
 
-	/*
-		function calculateSectionLengths(?sec:SectionData):Int
-		{
-			var daLength:Int = 0;
-
-			for (i in _song.notes)
-			{
-				var swagLength = i.lengthInSteps;
-
-				if (i.typeOfSection == Section.COPYCAT)
-					swagLength * 2;
-
-				daLength += swagLength;
-
-				if (sec != null && sec == i)
-				{
-					trace('swag loop??');
-					break;
-				}
-			}
-
-			return daLength;
-	}*/
 	private var daSpacing:Float = 0.3;
 
 	function loadLevel():Void
@@ -1031,13 +1008,13 @@ class ChartingState extends MusicBeatState
 
 	function loadJson(song:String):Void
 	{
-		PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
+		PlayState.SONG = Utils.getSongData(song.toLowerCase(), song.toLowerCase());
 		LoadingState.loadAndSwitchState(new ChartingState());
 	}
 
 	function loadAutosave():Void
 	{
-		PlayState.SONG = Song.parseJSONshit(FlxG.save.data.autosave);
+		PlayState.SONG = Utils.parseSongJSON(FlxG.save.data.autosave);
 		FlxG.resetState();
 	}
 

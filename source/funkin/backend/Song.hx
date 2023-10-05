@@ -21,21 +21,4 @@ class Song
 		this.notes = notes;
 		this.bpm = bpm;
 	}
-
-	public static function loadFromJson(jsonInput:String, ?folder:String):SongData
-	{
-		var rawJson = Assets.getText(Paths.json('charts/' + folder.toLowerCase() + '/' + jsonInput.toLowerCase())).trim();
-
-		while (!rawJson.endsWith("}"))
-			rawJson = rawJson.substr(0, rawJson.length - 1);
-
-		return parseJSONshit(rawJson);
-	}
-
-	public static function parseJSONshit(rawJson:String):SongData
-	{
-		var swagShit:SongData = cast Json.parse(rawJson).song;
-		swagShit.validScore = true;
-		return swagShit;
-	}
 }

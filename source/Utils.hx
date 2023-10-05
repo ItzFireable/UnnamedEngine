@@ -120,4 +120,44 @@ class Utils
 
 		return chars;
 	}
+
+	public static function parseSongJSON(rawJson:String):SongData
+	{
+		var swagShit = cast Json.parse(rawJson).song;
+		swagShit.validScore = true;
+		return swagShit;
+	}
+
+	public static function getRawJSON(path:String):String
+	{
+		var rawJson = Assets.getText(Paths.json(path)).trim();
+		while (!rawJson.endsWith("}"))
+			rawJson = rawJson.substr(0, rawJson.length - 1);
+
+		return rawJson;
+	}
+
+	public static function getSongData(object:String, ?folder:String):SongData
+	{
+		var targetFolder = folder.length > 0 ? 'charts/' + folder.toLowerCase() : 'charts';
+		var rawJson = getRawJSON(targetFolder + '/' + object.toLowerCase());
+		return parseSongJSON(rawJson);
+	}
+
+	public static function getCharacterData(object:String, ?folder:String):CharacterData
+	{
+		var targetFolder = folder.length > 0 ? 'characters/' + folder.toLowerCase() : 'characters';
+		var name:String = targetFolder + '/' + object.toLowerCase();
+		
+		if(!Paths.fileExists('data/' + name + '.json', IMAGE)) 
+		{
+			object = 'bf';
+			name = targetFolder + '/' + object.toLowerCase();
+		}
+
+		var rawJson = getRawJSON(name);
+		var swagShit = cast Json.parse(rawJson);
+
+		return swagShit;
+	}
 }

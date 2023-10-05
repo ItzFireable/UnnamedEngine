@@ -35,6 +35,23 @@ typedef SectionData =
 	var altAnim:Bool;
 }
 
+typedef CharacterData =
+{
+	var name:String;
+	var icon:String;
+
+	var bopSpeed:Int;
+	
+	var facing:String;
+	var texture:String;
+	var defaultAnim:String;
+
+	var additionalChart:String;
+
+	var indices:Array<Dynamic>;
+	var animations:Array<Dynamic>;
+}
+
 typedef SaveInputLists =
 {
 	?keys:Array<Int>,

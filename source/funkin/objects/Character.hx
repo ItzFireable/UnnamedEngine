@@ -2,6 +2,7 @@ package funkin.objects;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.util.FlxDirectionFlags;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxSort;
@@ -12,8 +13,13 @@ class Character extends FlxSprite
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var debugMode:Bool = false;
 
+	public var initFacing:Int = FlxDirectionFlags.RIGHT;
+	public var initWidth:Float;
+
 	public var isPlayer:Bool = false;
 	public var isGirlfriend:Bool = false;
+
+	public var curIcon:String = 'face';
 	public var curCharacter:String = 'bf';
 
 	public var holdTimer:Float = 0;
@@ -33,7 +39,7 @@ class Character extends FlxSprite
 
 		this.isPlayer = isPlayer;
 
-		switch (curCharacter)
+		/*switch (curCharacter)
 		{
 			case 'gf':
 				// GIRLFRIEND CODE
@@ -338,33 +344,6 @@ class Character extends FlxSprite
 
 				flipX = true;
 			// Player characters
-			case 'bf':
-				var tex = Paths.getSparrowAtlas('characters/BOYFRIEND');
-				frames = tex;
-				quickAnimAdd('idle', 'BF idle dance');
-				quickAnimAdd('singUP', 'BF NOTE UP0');
-				quickAnimAdd('singLEFT', 'BF NOTE LEFT0');
-				quickAnimAdd('singRIGHT', 'BF NOTE RIGHT0');
-				quickAnimAdd('singDOWN', 'BF NOTE DOWN0');
-				quickAnimAdd('singUPmiss', 'BF NOTE UP MISS');
-				quickAnimAdd('singLEFTmiss', 'BF NOTE LEFT MISS');
-				quickAnimAdd('singRIGHTmiss', 'BF NOTE RIGHT MISS');
-				quickAnimAdd('singDOWNmiss', 'BF NOTE DOWN MISS');
-				quickAnimAdd('hey', 'BF HEY');
-
-				quickAnimAdd('firstDeath', "BF dies");
-				animation.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
-				quickAnimAdd('deathConfirm', "BF Dead confirm");
-
-				animation.addByPrefix('scared', 'BF idle shaking', 24, true);
-
-				loadOffsetFile(curCharacter);
-
-				playAnim('idle');
-
-				flipX = true;
-
-				loadOffsetFile(curCharacter);
 			case 'bf-christmas':
 				var tex = Paths.getSparrowAtlas('characters/bfChristmas');
 				frames = tex;
@@ -472,56 +451,123 @@ class Character extends FlxSprite
 				loadOffsetFile(curCharacter);
 				playAnim('firstDeath');
 				flipX = true;
-		}
+			default:
+				loadCharacter(curCharacter);
+		}*/
+
+		loadCharacter(curCharacter);
 
 		dance();
 		animation.finish();
+	}
+	public function loadCharacter(char:String)
+	{
+		var json = Utils.getCharacterData(char);
+		if (json.texture == null) return;
 
-		if (isPlayer)
-		{
-			flipX = !flipX;
+		var tex = Paths.getSparrowAtlas('characters/' + json.texture);
+		frames = tex;
 
-			// Doesn't flip for BF, since his are already in the right place???
-			if (!curCharacter.startsWith('bf'))
+		curIcon = json.icon;
+		if (json.bopSpeed > 0)
+			bopSpeed = json.bopSpeed;
+
+		initFacing = json.facing == "left" ? FlxDirectionFlags.LEFT : FlxDirectionFlags.RIGHT;
+		initWidth = frameWidth;
+
+		setFacingFlip((initFacing == FlxDirectionFlags.LEFT ? FlxDirectionFlags.RIGHT : FlxDirectionFlags.LEFT), true, false);
+		facing = (isPlayer ? FlxDirectionFlags.LEFT : FlxDirectionFlags.RIGHT);
+
+		if (json.animations != null)
+			for (anim in json.animations)
 			{
-				// var animArray
-				var oldRight = animation.getByName('singRIGHT').frames;
-				animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
-				animation.getByName('singLEFT').frames = oldRight;
+				var prefix = anim[0];
+				var name = anim[1];
+				var offsetX = anim[2];
+				var offsetY = anim[3];
+				var fps = anim[4];
+				var loop = anim[5];
 
-				// IF THEY HAVE MISS ANIMATIONS??
-				if (animation.getByName('singRIGHTmiss') != null)
-				{
-					var oldMiss = animation.getByName('singRIGHTmiss').frames;
-					animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
-					animation.getByName('singLEFTmiss').frames = oldMiss;
-				}
+				quickAnimAdd(prefix, name, fps != null ? Std.parseInt(fps) : 24, loop || false);
+				addOffset(prefix, Std.parseInt(offsetX), Std.parseInt(offsetY));
+			}
+
+		if (json.indices != null)
+			for (anim in json.indices)
+			{
+				var prefix = anim[0];
+				var name = anim[1];
+				var indices = anim[2];
+
+				var offsetX = anim[3];
+				var offsetY = anim[4];
+				var fps = anim[5];
+				var loop = anim[6];
+
+				quickIndiceAdd(prefix, name, indices, fps != null ? Std.parseInt(fps) : 24, loop || false);
+				addOffset(prefix, Std.parseInt(offsetX), Std.parseInt(offsetY));
+			}
+
+		// Thanks Myth team <3
+		if (facing != initFacing)
+		{
+			if (animation.getByName('singRIGHT') != null)
+			{
+				var oldRight = animation.getByName('singRIGHT').frames;
+				var oldOffset = animOffsets['singRIGHT'];
+				animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
+				animOffsets['singRIGHT'] = animOffsets['singLEFT'];
+				animation.getByName('singLEFT').frames = oldRight;
+				animOffsets['singLEFT'] = oldOffset;
+			}
+
+			if (animation.getByName('singRIGHTmiss') != null)
+			{
+				var oldMiss = animation.getByName('singRIGHTmiss').frames;
+				var oldOffset = animOffsets['singRIGHTmiss'];
+				animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
+				animOffsets['singRIGHTmiss'] = animOffsets['singLEFTmiss'];
+				animation.getByName('singLEFTmiss').frames = oldMiss;
+				animOffsets['singLEFTmiss'] = oldOffset;
+			}
+
+			if (animation.getByName('singRIGHT-alt') != null)
+			{
+				var oldRight = animation.getByName('singRIGHT-alt').frames;
+				var oldOffset = animOffsets['singRIGHT-alt'];
+				animation.getByName('singRIGHT-alt').frames = animation.getByName('singLEFT-alt').frames;
+				animOffsets['singRIGHT-alt'] = animOffsets['singLEFT-alt'];
+				animation.getByName('singLEFT-alt').frames = oldRight;
+				animOffsets['singLEFT-alt'] = oldOffset;
 			}
 		}
+
+		playAnim(json.defaultAnim != null ? json.defaultAnim : 'idle');
+
+		if (json.additionalChart != null)
+			loadMappedAnims(json.additionalChart);
 	}
 
-	public function loadMappedAnims()
+	public function loadMappedAnims(chart)
 	{
-		var swagshit = Song.loadFromJson('go_pico_yeah_yeah_go_pico_oh', 'stress');
-		var notes = swagshit.notes;
+		var chart = Utils.getSongData(chart, PlayState.SONG.song.toLowerCase());
+		var notes = chart.notes;
 
 		for (section in notes)
 			for (idk in section.sectionNotes)
 				animationNotes.push(idk);
 
-		TankmenBG.animationNotes = animationNotes;
 		animationNotes.sort(sortAnims);
 	}
 
 	function sortAnims(val1:Array<Dynamic>, val2:Array<Dynamic>):Int
-	{
 		return FlxSort.byValues(FlxSort.ASCENDING, val1[0], val2[0]);
-	}
 
-	function quickAnimAdd(name:String, prefix:String, ?looped:Bool = false)
-	{
-		animation.addByPrefix(name, prefix, 24, looped);
-	}
+	function quickAnimAdd(name:String, prefix:String, ?fps:Int = 24, ?looped:Bool = false)
+		animation.addByPrefix(name, prefix, fps, looped);
+
+	function quickIndiceAdd(name:String, prefix:String, indices:Array<Int>, ?fps:Int = 24, ?looped:Bool = false)
+		animation.addByIndices(name, prefix, indices, "", fps, looped);
 
 	private function loadOffsetFile(offsetCharacter:String)
 	{
@@ -539,42 +585,6 @@ class Character extends FlxSprite
 		if (animation.curAnim.name.startsWith('sing'))
 			holdTimer += elapsed;
 
-		if (curCharacter.endsWith('-car'))
-		{
-			// looping hair anims after idle finished
-			if (!animation.curAnim.name.startsWith('sing') && animation.curAnim.finished)
-				playAnim('idleHair');
-		}
-
-		switch (curCharacter)
-		{
-			case 'gf':
-				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
-					playAnim('danceRight');
-			/*case "pico-speaker":
-				// for pico??
-				if (animationNotes.length > 0)
-				{
-					if (Conductor.songPosition > animationNotes[0][0])
-					{
-						var shootAnim:Int = 1;
-
-						if (animationNotes[0][1] >= 2)
-							shootAnim = 3;
-
-						shootAnim += FlxG.random.int(0, 1);
-
-						playAnim('shoot' + shootAnim, true);
-						animationNotes.shift();
-					}
-				}
-
-				if (animation.curAnim.finished)
-				{
-					playAnim(animation.curAnim.name, false, false, animation.curAnim.numFrames - 3);
-				}*/
-		}
-
 		super.update(elapsed);
 	}
 
@@ -585,34 +595,18 @@ class Character extends FlxSprite
 	 */
 	public function dance()
 	{
-		if (!debugMode)
+		if (animation.getByName("danceLeft") != null && animation.getByName("danceRight") != null)
 		{
-			switch (curCharacter)
-			{
-				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-tankmen':
-					if (!animation.curAnim.name.startsWith('hair'))
-					{
-						danced = !danced;
+			danced = !danced;
 
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-				case 'tankman':
-					if (!animation.curAnim.name.endsWith('DOWN-alt'))
-						playAnim('idle');
-
-				case 'spooky':
-					danced = !danced;
-
-					if (danced)
-						playAnim('danceRight');
-					else
-						playAnim('danceLeft');
-				default:
-					playAnim('idle');
-			}
+			if (danced)
+				playAnim('danceRight');
+			else
+				playAnim('danceLeft');
+		}
+		else
+		{
+			playAnim('idle');
 		}
 	}
 
@@ -622,9 +616,7 @@ class Character extends FlxSprite
 
 		var daOffset = animOffsets.get(AnimName);
 		if (animOffsets.exists(AnimName))
-		{
-			offset.set(daOffset[0], daOffset[1]);
-		}
+			offset.set((facing != initFacing ? -1 : 1) * daOffset[0] + (facing != initFacing ? frameWidth - initWidth : 0), daOffset[1]);
 		else
 			offset.set(0, 0);
 

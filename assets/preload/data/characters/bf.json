@@ -1,0 +1,28 @@
+{
+    "name": "boyfriend",
+    "icon": "bf",
+    "facing": "left",
+
+    "defaultAnim": "idle",
+    "texture": "BOYFRIEND",
+
+    "animations": [
+        ["idle", "BF idle dance", -5, 0],
+        ["hey", "BF HEY", 7, 4],
+        ["scared", "BF idle shaking", -4, 0, 24, true],
+
+        ["singLEFT", "BF NOTE LEFT0", 12, -6],
+        ["singDOWN", "BF NOTE DOWN0", -10, -50],
+        ["singUP", "BF NOTE UP0", -29, 27],
+        ["singRIGHT", "BF NOTE RIGHT0", -38, -7],
+
+        ["singLEFTmiss", "BF NOTE LEFT MISS", 12, 24],
+        ["singDOWNmiss", "BF NOTE DOWN MISS", -11, -19],
+        ["singUPmiss", "BF NOTE UP MISS", -29, 27],
+        ["singRIGHTmiss", "BF NOTE RIGHT MISS", -30, 21],
+
+        ["firstDeath", "BF dies", 37, 11],
+        ["deathLoop", "BF Dead Loop", 37, 5, 24, true],
+        ["deathConfirm", "BF Dead confirm", 37, 69]
+    ]
+}

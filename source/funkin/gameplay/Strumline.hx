@@ -75,7 +75,7 @@ class Strumline extends FlxSpriteGroup
 
 			babyArrow.y = this.y - 10;
 			babyArrow.alpha = 0;
-			FlxTween.tween(babyArrow, {y: this.y, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+			FlxTween.tween(babyArrow, {y: this.y, alpha: 1}, 1, {ease: FlxEase.circInOut, startDelay: 0.5 + (0.2 * i)});
 
 			babyArrow.ID = i;
 

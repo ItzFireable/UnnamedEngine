@@ -23,30 +23,18 @@ class HealthIcon extends FlxSprite
 		scrollFactor.set();
 	}
 
-	public var isOldIcon:Bool = false;
-
-	public function swapOldIcon():Void
-	{
-		isOldIcon = !isOldIcon;
-
-		if (isOldIcon)
-			changeIcon('bf-old');
-		else
-			changeIcon(PlayState.SONG.player1);
-	}
-
 	public function changeIcon(newChar:String):Void
 	{
-		if (newChar != 'bf-pixel' && newChar != 'bf-old')
-			newChar = newChar.split('-')[0].trim();
+		newChar = newChar.trim();
 
 		if (newChar != char)
 		{
-			if (animation.getByName(newChar) == null)
-			{
-				loadGraphic(Paths.image('icons/icon-' + newChar), true, 150, 150);
-				animation.add(newChar, [0, 1], 0, false, isPlayer);
-			}
+			var name:String = 'icons/' + newChar;
+			if(!Paths.fileExists(name + '.png', IMAGE)) name = 'icons/icon-face';
+
+			loadGraphic(Paths.image('icons/icon-' + newChar), true, 150, 150);
+			animation.add(newChar, [0, 1], 0, false, isPlayer);
+			
 			animation.play(newChar);
 			char = newChar;
 		}

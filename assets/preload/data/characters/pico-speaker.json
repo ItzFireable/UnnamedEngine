@@ -1,0 +1,19 @@
+{
+    "name": "Pico (Speaker)",
+    "icon": "pico",
+    "facing": "right",
+    "bopSpeed": 1,
+
+    "defaultAnim": "idle",
+    "texture": "picoSpeaker",
+    "additionalChart": "go_pico_yeah_yeah_go_pico_oh",
+
+    "animations": [
+        ["idle", "Pico idle", 0, 0, 24, true],
+
+        ["singLEFT", "Pico shoot 4", 439, -64],
+        ["singDOWN", "Pico shoot 3", 412, -19],
+        ["singUP", "Pico shoot 2", -1, -128],
+        ["singRIGHT", "Pico shoot 1", 0, 0]
+    ]
+}

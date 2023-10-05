@@ -113,4 +113,12 @@ class Paths
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 	}
+
+	public static function fileExists(key:String, type:AssetType, ?library:String = null)
+	{
+		if(OpenFlAssets.exists(getPath(key, type, library))) {
+			return true;
+		}
+		return false;
+	}
 }

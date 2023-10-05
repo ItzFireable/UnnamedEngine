@@ -48,10 +48,10 @@ class BaseHUD extends FlxSpriteGroup
 		healthBar.scrollFactor.set();
 		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 
-		iconP1 = new HealthIcon(SONG.player1, true);
+		iconP1 = new HealthIcon(PlayState.characters.get('boyfriend').curIcon, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 
-		iconP2 = new HealthIcon(SONG.player2, false);
+		iconP2 = new HealthIcon(PlayState.characters.get('dad').curIcon, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 
 		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 190, healthBarBG.y + 30, 0, "", 20);

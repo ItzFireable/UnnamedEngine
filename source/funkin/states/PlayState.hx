@@ -204,7 +204,7 @@ class PlayState extends MusicBeatState
 		persistentDraw = true;
 
 		if (SONG == null)
-			SONG = Song.loadFromJson('tutorial');
+			SONG = Utils.getSongData('tutorial');
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
@@ -700,49 +700,55 @@ class PlayState extends MusicBeatState
 				}
 		}
 
+		if (gf.animationNotes.length > 0)
+		{
+			var strum:Strumline = generateStaticArrows(2, 0.5, camGame, gf.y);
+			strum.scrollFactor.set(gf.scrollFactor.x, gf.scrollFactor.y);
+			strum.character = "gf";
+
+			strum.x = gf.x + (gf.width / 2) - strum.width;
+			strum.yOffset -= 150;
+
+			if (SONG.song.toLowerCase() == 'stress')
+			{
+				var tempTankman:TankmenBG = new TankmenBG(20, 500, true);
+				tempTankman.strumTime = 10;
+				tempTankman.resetShit(20, 600, true);
+				tankmanRun.add(tempTankman);
+			}
+
+			for (i in 0...gf.animationNotes.length)
+			{
+				var note = gf.animationNotes[i];
+				var daStrumTime:Float = note[0];
+
+				var rawNoteData:Int = Std.int(note[1]);
+				var daNoteData:Int = Std.int(rawNoteData % 4);
+				
+				if (FlxG.random.bool(16) && SONG.song.toLowerCase() == 'stress')
+				{
+					var tankman:TankmenBG = tankmanRun.recycle(TankmenBG);
+					tankman.strumTime = note[0];
+
+					tankman.resetShit(500, 200 + FlxG.random.int(50, 100), rawNoteData < 2);
+					tankmanRun.add(tankman);
+				}
+
+				var swagNote:Note = new Note(daStrumTime, daNoteData, null);
+				swagNote.sustainLength = note[2];
+
+				swagNote.strum = daNoteData;
+				swagNote.strumline = 2;
+
+				unspawnNotes.push(swagNote);
+			}
+		}
+
 		switch (gfVersion)
 		{
 			case 'pico-speaker':
 				gf.x -= 50;
 				gf.y -= 200;
-
-				var strum:Strumline = generateStaticArrows(2, 0.5, camGame, gf.y);
-				strum.scrollFactor.set(gf.scrollFactor.x, gf.scrollFactor.y);
-				strum.character = "gf";
-
-				strum.x = gf.x + (gf.width / 2) - strum.width;
-				strum.yOffset -= 150;
-
-				var tempTankman:TankmenBG = new TankmenBG(20, 500, true);
-				tempTankman.strumTime = 10;
-				tempTankman.resetShit(20, 600, true);
-				tankmanRun.add(tempTankman);
-
-				for (i in 0...TankmenBG.animationNotes.length)
-				{
-					var note = TankmenBG.animationNotes[i];
-					var daStrumTime:Float = note[0];
-
-					var rawNoteData:Int = Std.int(note[1]);
-					var daNoteData:Int = Std.int(rawNoteData % 4);
-					
-					if (FlxG.random.bool(16))
-					{
-						var tankman:TankmenBG = tankmanRun.recycle(TankmenBG);
-						tankman.strumTime = note[0];
-
-						tankman.resetShit(500, 200 + FlxG.random.int(50, 100), rawNoteData < 2);
-						tankmanRun.add(tankman);
-					}
-
-					var swagNote:Note = new Note(daStrumTime, daNoteData, null);
-					swagNote.sustainLength = note[2];
-
-					swagNote.strum = daNoteData;
-					swagNote.strumline = 2;
-
-					unspawnNotes.push(swagNote);
-				}
 		}
 
 		add(gf);
@@ -1438,7 +1444,7 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('Lights_Shut_off'), function()
 					{
 						// no camFollow so it centers on horror tree
-						SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase() + difficulty, storyPlaylist[0]);
+						SONG = Utils.getSongData(storyPlaylist[0].toLowerCase() + difficulty, storyPlaylist[0]);
 						LoadingState.loadAndSwitchState(new PlayState());
 					});
 				}
@@ -1446,7 +1452,7 @@ class PlayState extends MusicBeatState
 				{
 					prevCamFollow = camFollow;
 
-					SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase() + difficulty, storyPlaylist[0]);
+					SONG = Utils.getSongData(storyPlaylist[0].toLowerCase() + difficulty, storyPlaylist[0]);
 					LoadingState.loadAndSwitchState(new PlayState());
 				}
 			}
